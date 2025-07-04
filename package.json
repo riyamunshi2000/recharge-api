@@ -2,10 +2,12 @@
   "name": "mock-recharge-billpay-api",
   "version": "2.0.0",
   "description": "Comprehensive Mock API for mobile recharge and bill payment services",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "pnpm exec nodemon server.js",
+    "start": "node index.js",
+    "dev": "pnpm exec nodemon index.js",
+    "build": "echo 'No build step required'",
+    "vercel-build": "echo 'No build step required'",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {

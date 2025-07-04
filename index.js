@@ -4,10 +4,19 @@ const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000; // Changed from 3002 to 3000 for Vercel compatibility
+
+// Enhanced CORS configuration for Vercel deployment
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production' 
+        ? ['https://your-frontend-domain.com', 'https://your-app.vercel.app'] 
+        : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8080'],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -471,14 +480,17 @@ app.use('*', (req, res) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Comprehensive Mock Recharge & Bill Payment API running on port ${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/health`);
-    console.log(`📋 API docs: http://localhost:${PORT}/`);
-    console.log(`📱 Mobile recharge: POST http://localhost:${PORT}/api/recharge`);
-    console.log(`💰 Bill payment: POST http://localhost:${PORT}/api/billpay`);
-    console.log(`📈 API status: http://localhost:${PORT}/api/status`);
-});
+// Start server (only if not in Vercel serverless environment)
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    const server = app.listen(PORT, () => {
+        console.log(`🚀 Comprehensive Mock Recharge & Bill Payment API running on port ${PORT}`);
+        console.log(`📊 Health check: http://localhost:${PORT}/health`);
+        console.log(`📋 API docs: http://localhost:${PORT}/`);
+        console.log(`📱 Mobile recharge: POST http://localhost:${PORT}/api/recharge`);
+        console.log(`💰 Bill payment: POST http://localhost:${PORT}/api/billpay`);
+        console.log(`📈 API status: http://localhost:${PORT}/api/status`);
+    });
+}
 
+// Export the Express app for Vercel
 module.exports = app;
