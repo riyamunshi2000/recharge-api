@@ -94,7 +94,8 @@ function getBillProviderByCode(code) {
 app.get('/', (req, res) => {
     res.json({
         message: 'Comprehensive Mock Recharge & Bill Payment API',
-        version: '2.0.0',
+        version: '2.0.1',
+        deployed_at: new Date().toISOString(),
         endpoints: {
             mobile_recharge: {
                 'GET /api/operators': 'Get supported mobile operators',
